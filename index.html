@@ -42,7 +42,7 @@
   .section-heading:first-child { margin-top: 0; }
   .section-heading h2 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; color: var(--ink); white-space: nowrap; }
   .section-heading .line { flex: 1; height: 1px; background: var(--surface-alt); }
-  .section-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; background: var(--accent); color: white; white-space: nowrap; }
+  .section-tag { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; background: var(--accent); color: white; white-space: nowrap; }
 
   .semesters-stack { display: flex; flex-direction: column; gap: 20px; }
 
@@ -66,30 +66,30 @@
   .disc-item:hover { background: rgba(0,0,0,0.015); }
 
   .disc-top { display: grid; grid-template-columns: 80px 1fr auto; gap: 10px; align-items: baseline; }
-  .disc-code { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent-mid); font-weight: 500; }
+  .disc-code { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--accent-mid); font-weight: 500; }
   .disc-name { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
-  .disc-ch { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink-faint); white-space: nowrap; text-align: right; }
-  .disc-ext { display: inline-block; margin-left: 6px; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; color: #2d7a4f; background: #dff2e8; padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px; }
+  .disc-ch { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--ink-faint); white-space: nowrap; text-align: right; }
+  .disc-ext { display: inline-block; margin-left: 6px; font-family: 'Fira Code', monospace; font-size: 10px; font-weight: 600; color: #2d7a4f; background: #dff2e8; padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px; }
 
   .disc-reqs { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; padding-left: 90px; }
   .req-item { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; border-radius: var(--radius-sm); padding: 4px 8px; border: 1px solid; }
   .req-fraco { background: #fef9ec; border-color: #e8d490; color: #7a6020; }
   .req-forte { background: #fde8e8; border-color: #e8a090; color: #8a2020; }
   .req-conjunto { background: #e8f0fb; border-color: #90aad8; color: #204080; }
-  .req-code { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; }
+  .req-code { font-family: 'Fira Code', monospace; font-size: 10px; font-weight: 600; }
   .req-name { color: inherit; }
-  .req-badge { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; opacity: 0.7; white-space: nowrap; padding-left: 5px; border-left: 1px solid currentColor; margin-left: 3px; }
+  .req-badge { font-family: 'Fira Code', monospace; font-size: 9.5px; letter-spacing: 0.5px; opacity: 0.7; white-space: nowrap; padding-left: 5px; border-left: 1px solid currentColor; margin-left: 3px; }
 
   .sem-footer { padding: 10px 24px; background: rgba(0,0,0,0.02); display: flex; justify-content: flex-end; gap: 6px; align-items: center; border-top: 1px solid var(--surface-alt); }
   .sem-footer-label { font-size: 11px; color: var(--ink-muted); }
-  .sem-footer-value { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; color: var(--sem-color); }
+  .sem-footer-value { font-family: 'Fira Code', monospace; font-size: 12px; font-weight: 600; color: var(--sem-color); }
 
   .ch-section { margin-top: 0; background: var(--surface); border-radius: var(--radius); border: 1.5px solid rgba(0,0,0,0.18); overflow: hidden; max-width: 560px; }
   .ch-table { width: 100%; border-collapse: collapse; }
-  .ch-table th { background: var(--accent); color: rgba(255,255,255,0.85); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 12px 20px; text-align: left; font-weight: 500; }
+  .ch-table th { background: var(--accent); color: rgba(255,255,255,0.85); font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 12px 20px; text-align: left; font-weight: 500; }
   .ch-table th:not(:first-child) { text-align: right; }
   .ch-table td { padding: 13px 20px; font-size: 13.5px; border-bottom: 1px solid var(--surface-alt); color: var(--ink); }
-  .ch-table td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink-muted); }
+  .ch-table td:not(:first-child) { text-align: right; font-family: 'Fira Code', monospace; font-size: 13px; color: var(--ink-muted); }
   .ch-table tr:last-child td { border-bottom: none; }
   .ch-table tr.ch-total td { background: var(--accent-light); font-weight: 600; }
   .ch-table tr.ch-total td:not(:first-child) { color: var(--accent); }
@@ -106,7 +106,7 @@
 
 
   a.disc-code-link {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Fira Code', monospace;
     font-size: 12px;
     color: var(--accent-mid);
     font-weight: 500;
