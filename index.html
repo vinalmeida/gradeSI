@@ -25,7 +25,7 @@
 
   .header { background: var(--accent); color: white; padding: 48px 48px 40px; position: relative; overflow: hidden; }
   .header::before { content: ''; position: absolute; top: -60px; right: -60px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,0.05); }
-  .header-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 16px; }
+  .header-eyebrow { font-family: 'Fira Code', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 16px; }
   .header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(28px, 4vw, 48px); font-weight: 400; line-height: 1.1; margin-bottom: 8px; }
   .header h1 em { font-style: italic; color: rgba(255,255,255,0.75); }
   .header-sub { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; font-weight: 300; }
@@ -46,7 +46,7 @@
 
   .semesters-stack { display: flex; flex-direction: column; gap: 20px; }
 
-  .sem-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1px solid rgba(0,0,0,0.07); animation: fadeUp 0.4s ease both; }
+  .sem-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1.5px solid rgba(0,0,0,0.18); animation: fadeUp 0.4s ease both; }
   .sem-card:nth-child(1) { animation-delay: 0.03s; }
   .sem-card:nth-child(2) { animation-delay: 0.08s; }
   .sem-card:nth-child(3) { animation-delay: 0.13s; }
@@ -58,7 +58,7 @@
 
   .sem-header { padding: 18px 24px 14px; display: flex; align-items: center; justify-content: space-between; background: var(--sem-bg); border-bottom: 1px solid rgba(0,0,0,0.06); }
   .sem-number { font-family: 'DM Serif Display', serif; font-size: 19px; font-weight: 400; color: var(--sem-color); }
-  .sem-badge { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; background: var(--sem-color); color: white; font-weight: 500; }
+  .sem-badge { font-family: 'Fira Code', monospace; font-size: 12px; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; background: var(--sem-color); color: white; font-weight: 500; }
 
   .disc-list { padding: 6px 0; }
   .disc-item { padding: 13px 24px; border-bottom: 1px solid var(--surface-alt); transition: background 0.12s; }
@@ -67,7 +67,7 @@
 
   .disc-top { display: grid; grid-template-columns: 80px 1fr auto; gap: 10px; align-items: baseline; }
   .disc-code { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent-mid); font-weight: 500; }
-  .disc-name { font-size: 14px; font-weight: 400; color: var(--ink); line-height: 1.4; }
+  .disc-name { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
   .disc-ch { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink-faint); white-space: nowrap; text-align: right; }
   .disc-ext { display: inline-block; margin-left: 6px; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; color: #2d7a4f; background: #dff2e8; padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px; }
 
@@ -84,7 +84,7 @@
   .sem-footer-label { font-size: 11px; color: var(--ink-muted); }
   .sem-footer-value { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; color: var(--sem-color); }
 
-  .ch-section { margin-top: 0; background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(0,0,0,0.07); overflow: hidden; max-width: 560px; }
+  .ch-section { margin-top: 0; background: var(--surface); border-radius: var(--radius); border: 1.5px solid rgba(0,0,0,0.18); overflow: hidden; max-width: 560px; }
   .ch-table { width: 100%; border-collapse: collapse; }
   .ch-table th { background: var(--accent); color: rgba(255,255,255,0.85); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 12px 20px; text-align: left; font-weight: 500; }
   .ch-table th:not(:first-child) { text-align: right; }
@@ -110,13 +110,15 @@
     font-size: 12px;
     color: var(--accent-mid);
     font-weight: 500;
-    text-decoration: none;
-    border-bottom: 1px dashed var(--accent-mid);
-    transition: color 0.15s, border-color 0.15s;
+    text-decoration: underline;
+    text-decoration-color: var(--accent-mid);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 0.15s, text-decoration-color 0.15s;
   }
   a.disc-code-link:hover {
     color: var(--accent);
-    border-bottom-style: solid;
+    text-decoration-color: var(--accent);
   }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
