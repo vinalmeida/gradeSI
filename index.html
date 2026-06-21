@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade Curricular — Sistemas de Informação · EACH/USP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* base */
+    --bg: #1a1a1a;
+    --surface: #242424;
+    --surface-alt: #2e2e2e;
+    --ink: #dcddde;
+    --ink-muted: #888888;
+    --ink-faint: #555555;
+    --accent: #7c3aed;
+    --accent-light: #2a1f4e;
+    --accent-mid: #a78bfa;
+    --gold: #e9c46a;
+    --radius: 10px;
+    --radius-sm: 5px;
+    /* theme-sensitive */
+    --border-card: rgba(255,255,255,0.08);
+    --border-semhdr: rgba(255,255,255,0.06);
+    --hover-bg: rgba(255,255,255,0.04);
+    --footer-bg: rgba(255,255,255,0.03);
+    --ext-color: #34d399; --ext-bg: #1a2e25;
+    --req-fraco-bg: #2a2110; --req-fraco-border: #6b5c10; --req-fraco-color: #d4a843;
+    --req-forte-bg: #2e1515; --req-forte-border: #7a3030; --req-forte-color: #f87171;
+    --req-conj-bg: #1a2240;  --req-conj-border: #4060a0;  --req-conj-color: #818cf8;
+    --dot-fraco-bg: #2a2110; --dot-fraco-border: #6b5c10;
+    --dot-forte-bg: #2e1515; --dot-forte-border: #7a3030;
+    --dot-conj-bg:  #1a2240; --dot-conj-border:  #4060a0;
+    --dot-ext-bg:   #1a2e25; --dot-ext-border:   #2d7a4f;
+    /* semester palette */
+    --sem1-color: #818cf8; --sem1-bg: #1e2133;
+    --sem2-color: #34d399; --sem2-bg: #1a2e25;
+    --sem3-color: #fbbf24; --sem3-bg: #2a2116;
+    --sem4-color: #c084fc; --sem4-bg: #231b2e;
+    --sem5-color: #f87171; --sem5-bg: #2e1b1b;
+    --sem6-color: #2dd4bf; --sem6-bg: #1a2e2c;
+    --sem7-color: #d4b483; --sem7-bg: #282318;
+    --sem8-color: #c084fc; --sem8-bg: #241a24;
+  }
+
+  html[data-theme="light"] {
+    --bg: #f4f1ec;
+    --surface: #faf8f4;
+    --surface-alt: #edeae3;
+    --ink: #1a1714;
+    --ink-muted: #6b6560;
+    --ink-faint: #a09890;
+    --accent: #1a3a6e;
+    --accent-light: #e8edf6;
+    --accent-mid: #4a6fa5;
+    --gold: #c8953a;
+    --border-card: rgba(0,0,0,0.18);
+    --border-semhdr: rgba(0,0,0,0.06);
+    --hover-bg: rgba(0,0,0,0.015);
+    --footer-bg: rgba(0,0,0,0.02);
+    --ext-color: #2d7a4f; --ext-bg: #dff2e8;
+    --req-fraco-bg: #fef9ec; --req-fraco-border: #e8d490; --req-fraco-color: #7a6020;
+    --req-forte-bg: #fde8e8; --req-forte-border: #e8a090; --req-forte-color: #8a2020;
+    --req-conj-bg:  #e8f0fb; --req-conj-border:  #90aad8; --req-conj-color: #204080;
+    --dot-fraco-bg: #fef9ec; --dot-fraco-border: #e8d490;
+    --dot-forte-bg: #fde8e8; --dot-forte-border: #e8a090;
+    --dot-conj-bg:  #e8f0fb; --dot-conj-border:  #90aad8;
+    --dot-ext-bg:   #dff2e8; --dot-ext-border:   #60c090;
+    --sem1-color: #4a6fa5; --sem1-bg: #e8f0fb;
+    --sem2-color: #2d7a4f; --sem2-bg: #e8f5ee;
+    --sem3-color: #c8953a; --sem3-bg: #fef3e8;
+    --sem4-color: #7a4fa5; --sem4-bg: #f3eaf8;
+    --sem5-color: #a53a3a; --sem5-bg: #fde8e8;
+    --sem6-color: #2d7a72; --sem6-bg: #e8f8f5;
+    --sem7-color: #8a7a2d; --sem7-bg: #f8f3e8;
+    --sem8-color: #6a3a6a; --sem8-bg: #f0e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; transition: background 0.25s, color 0.25s; }
+
+  .header { background: var(--accent); color: white; padding: 48px 48px 40px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -60px; right: -60px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  .header-eyebrow { font-family: 'Fira Code', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 16px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 48px); font-weight: 500; line-height: 1.1; margin-bottom: 8px; }
+  .header h1 em { font-style: italic; color: rgba(255,255,255,0.75); }
+  .header-sub { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; font-weight: 300; }
+
+  .stats-bar { background: var(--surface); border-bottom: 1px solid var(--surface-alt); padding: 20px 48px; display: flex; gap: 40px; flex-wrap: wrap; align-items: center; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+  .stat-divider { width: 1px; background: var(--surface-alt); align-self: stretch; }
+
+  .main { padding: 48px; max-width: 860px; margin: 0 auto; }
+
+  .section-heading { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; margin-top: 48px; }
+  .section-heading:first-child { margin-top: 0; }
+  .section-heading h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--ink); white-space: nowrap; }
+  .section-heading .line { flex: 1; height: 1px; background: var(--surface-alt); }
+  .section-tag { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; background: var(--accent); color: white; white-space: nowrap; }
+
+  .semesters-stack { display: flex; flex-direction: column; gap: 20px; }
+
+  .sem-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--border-card); animation: fadeUp 0.4s ease both; }
+  .sem-card:nth-child(1) { animation-delay: 0.03s; }
+  .sem-card:nth-child(2) { animation-delay: 0.08s; }
+  .sem-card:nth-child(3) { animation-delay: 0.13s; }
+  .sem-card:nth-child(4) { animation-delay: 0.18s; }
+  .sem-card:nth-child(5) { animation-delay: 0.23s; }
+  .sem-card:nth-child(6) { animation-delay: 0.28s; }
+  .sem-card:nth-child(7) { animation-delay: 0.33s; }
+  .sem-card:nth-child(8) { animation-delay: 0.38s; }
+
+  .sem-header { padding: 18px 24px 14px; display: flex; align-items: center; justify-content: space-between; background: var(--sem-bg); border-bottom: 1px solid var(--border-semhdr); }
+  .sem-number { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 500; color: var(--sem-color); }
+  .sem-badge { font-family: 'Fira Code', monospace; font-size: 12px; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; background: var(--sem-color); color: white; font-weight: 500; }
+
+  .disc-list { padding: 6px 0; }
+  .disc-item { padding: 13px 24px; border-bottom: 1px solid var(--surface-alt); transition: background 0.12s; }
+  .disc-item:last-child { border-bottom: none; }
+  .disc-item:hover { background: var(--hover-bg); }
+
+  .disc-top { display: grid; grid-template-columns: 80px 1fr auto; gap: 10px; align-items: baseline; }
+  .disc-code { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--accent-mid); font-weight: 500; }
+  .disc-name { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .disc-ch { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--ink-faint); white-space: nowrap; text-align: right; }
+  .disc-ext { display: inline-block; margin-left: 6px; font-family: 'Fira Code', monospace; font-size: 10px; font-weight: 600; color: var(--ext-color); background: var(--ext-bg); padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px; }
+
+  .disc-reqs { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; padding-left: 90px; }
+  .req-item { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; border-radius: var(--radius-sm); padding: 4px 8px; border: 1px solid; }
+  .req-fraco { background: var(--req-fraco-bg); border-color: var(--req-fraco-border); color: var(--req-fraco-color); }
+  .req-forte { background: var(--req-forte-bg); border-color: var(--req-forte-border); color: var(--req-forte-color); }
+  .req-conjunto { background: var(--req-conj-bg); border-color: var(--req-conj-border); color: var(--req-conj-color); }
+  .req-code { font-family: 'Fira Code', monospace; font-size: 10px; font-weight: 600; }
+  .req-name { color: inherit; }
+  .req-badge { font-family: 'Fira Code', monospace; font-size: 9.5px; letter-spacing: 0.5px; opacity: 0.7; white-space: nowrap; padding-left: 5px; border-left: 1px solid currentColor; margin-left: 3px; }
+
+  .sem-footer { padding: 10px 24px; background: var(--footer-bg); display: flex; justify-content: flex-end; gap: 6px; align-items: center; border-top: 1px solid var(--surface-alt); }
+  .sem-footer-label { font-size: 11px; color: var(--ink-muted); }
+  .sem-footer-value { font-family: 'Fira Code', monospace; font-size: 12px; font-weight: 600; color: var(--sem-color); }
+
+  .ch-section { margin-top: 0; background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border-card); overflow: hidden; max-width: 560px; }
+  .ch-table { width: 100%; border-collapse: collapse; }
+  .ch-table th { background: var(--accent); color: rgba(255,255,255,0.85); font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 12px 20px; text-align: left; font-weight: 500; }
+  .ch-table th:not(:first-child) { text-align: right; }
+  .ch-table td { padding: 13px 20px; font-size: 13.5px; border-bottom: 1px solid var(--surface-alt); color: var(--ink); }
+  .ch-table td:not(:first-child) { text-align: right; font-family: 'Fira Code', monospace; font-size: 13px; color: var(--ink-muted); }
+  .ch-table tr:last-child td { border-bottom: none; }
+  .ch-table tr.ch-total td { background: var(--accent-light); font-weight: 600; }
+  .ch-table tr.ch-total td:not(:first-child) { color: var(--accent); }
+
+  .legend { margin-top: 28px; padding: 16px 20px; background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--surface-alt); font-size: 12px; color: var(--ink-muted); line-height: 1.9; }
+  .legend strong { color: var(--ink); }
+  .req-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .req-legend-item { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-muted); }
+  .req-dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid; flex-shrink: 0; }
+
+  .page-footer { margin-top: 64px; padding: 28px 48px; border-top: 1px solid var(--surface-alt); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; color: var(--ink-muted); }
+  .footer-text { font-size: 12px; color: var(--ink-faint); }
+
+
+  a.disc-code-link {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--accent-mid);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--accent-mid);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+  a.disc-code-link:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .theme-toggle {
+    position: absolute; top: 20px; right: 24px; z-index: 10;
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 20px; padding: 6px 14px;
+    color: rgba(255,255,255,0.9); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.4px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.22); }
+  .theme-toggle svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ── overview grid ── */
+  .ov-wrap { overflow-x: auto; margin-bottom: 36px; background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border-card); }
+  .ov-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .ov-table th:nth-child(1), .ov-table td:nth-child(1) { --oc: var(--sem1-color); --ob: var(--sem1-bg); }
+  .ov-table th:nth-child(2), .ov-table td:nth-child(2) { --oc: var(--sem2-color); --ob: var(--sem2-bg); }
+  .ov-table th:nth-child(3), .ov-table td:nth-child(3) { --oc: var(--sem3-color); --ob: var(--sem3-bg); }
+  .ov-table th:nth-child(4), .ov-table td:nth-child(4) { --oc: var(--sem4-color); --ob: var(--sem4-bg); }
+  .ov-table th:nth-child(5), .ov-table td:nth-child(5) { --oc: var(--sem5-color); --ob: var(--sem5-bg); }
+  .ov-table th:nth-child(6), .ov-table td:nth-child(6) { --oc: var(--sem6-color); --ob: var(--sem6-bg); }
+  .ov-table th:nth-child(7), .ov-table td:nth-child(7) { --oc: var(--sem7-color); --ob: var(--sem7-bg); }
+  .ov-table th:nth-child(8), .ov-table td:nth-child(8) { --oc: var(--sem8-color); --ob: var(--sem8-bg); }
+  .ov-table th {
+    background: var(--ob); color: var(--oc);
+    padding: 10px 4px 8px; text-align: center;
+    font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 500;
+    border-bottom: 2px solid var(--oc);
+    border-right: 1px solid var(--border-card);
+  }
+  .ov-table th:last-child { border-right: none; }
+  .ov-table td {
+    padding: 4px 4px; text-align: center; vertical-align: middle;
+    border-bottom: 1px solid var(--surface-alt);
+    border-right: 1px solid var(--surface-alt);
+  }
+  .ov-table td:last-child { border-right: none; }
+  .ov-table tbody tr:last-child td { border-bottom: none; }
+  .ov-pill {
+    display: inline-block;
+    font-family: 'DM Mono', 'Fira Code', monospace; font-size: 10px; font-weight: 500;
+    padding: 3px 7px; border-radius: 8px;
+    background: var(--ob); color: var(--oc);
+    letter-spacing: 0.2px; white-space: nowrap;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 640px) {
+    .header, .stats-bar, .main { padding: 20px; }
+    .page-footer { padding: 20px; }
+    .stats-bar { gap: 16px; }
+    .disc-top { grid-template-columns: 72px 1fr auto; }
+    .disc-reqs { padding-left: 0; }
+  }
+
+  /* ── view toggle ── */
+  .view-toggle-wrap { display:flex; justify-content:center; margin-bottom:36px; }
+  .view-toggle { display:inline-flex; background:var(--surface); border:1.5px solid var(--border-card); border-radius:50px; padding:4px; gap:2px; }
+  .vt-btn { border:none; background:transparent; padding:9px 30px; border-radius:50px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--ink-muted); cursor:pointer; transition:background .18s,color .18s; white-space:nowrap; }
+  .vt-btn.active { background:var(--accent); color:#fff; }
+  .vt-btn:hover:not(.active) { color:var(--ink); background:var(--hover-bg); }
+
+  /* ── fluxo ── */
+  .fluxo-outer { overflow-x:auto; padding-bottom:8px; }
+  .fluxo-container { position:relative; display:flex; min-width:1240px; padding:20px 20px 60px; gap:0; }
+  .fluxo-col { display:flex; flex-direction:column; align-items:center; width:154px; flex-shrink:0; }
+  .fluxo-col-header { font-family:'Playfair Display',serif; font-size:12px; font-weight:500; color:var(--sem-color); text-align:center; margin-bottom:18px; padding-bottom:6px; border-bottom:2px solid var(--sem-color); width:120px; }
+  .fluxo-nodes { display:flex; flex-direction:column; gap:14px; align-items:center; }
+  .fluxo-node { position:relative; z-index:2; display:flex; align-items:center; justify-content:center; text-align:center; width:114px; height:40px; border-radius:8px; font-family:'DM Mono','Fira Code',monospace; font-size:11.5px; font-weight:600; border:1.5px solid; cursor:default; transition:transform .14s,box-shadow .14s,opacity .14s; line-height:1.2; padding:0 4px; }
+  .fluxo-node.type-normal { background:var(--surface); color:var(--ink); border-color:var(--border-card); }
+  .fluxo-node.type-ciclo { background:#2a1a0e; color:#d4956a; border-color:#5c3a1e; }
+  html[data-theme="light"] .fluxo-node.type-normal { box-shadow:0 1px 3px rgba(0,0,0,.1); }
+  html[data-theme="light"] .fluxo-node.type-ciclo { background:#fff0e0; color:#a05a20; border-color:#d4956a; }
+  .fluxo-node.node-hl { box-shadow:0 0 0 2px var(--accent-mid); transform:scale(1.07); z-index:10; }
+  .fluxo-node.node-dim { opacity:.15; }
+  .fluxo-svg { position:absolute; top:0; left:0; pointer-events:none; overflow:visible; }
+  .fluxo-edge { transition:opacity .14s; }
+  .fluxo-legend { display:flex; gap:20px; flex-wrap:wrap; font-size:12px; color:var(--ink-muted); margin-top:14px; padding:12px 16px; background:var(--surface); border-radius:var(--radius-sm); border:1px solid var(--surface-alt); align-items:center; }
+  .fluxo-legend-item { display:flex; align-items:center; gap:7px; }
+  .fl-line { display:inline-block; width:28px; height:2.5px; border-radius:2px; flex-shrink:0; }
+  .fl-line.fraco { background:#c8953a; }
+  .fl-line.forte { background:#f87171; }
+  .fl-line.conjunto { background:#818cf8; }
+  .fl-ciclo-dot { display:inline-block; width:14px; height:14px; border-radius:3px; background:#2a1a0e; border:1.5px solid #5c3a1e; flex-shrink:0; }
+  html[data-theme="light"] .fl-ciclo-dot { background:#fff0e0; border-color:#d4956a; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+    <svg id="toggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <span id="toggleLabel">Light</span>
+  </button>
+  <div class="header-eyebrow">Escola de Artes, Ciências e Humanidades · USP</div>
+  <h1>Bacharelado em<br><em>Sistemas de Informação</em></h1>
+  <div class="header-sub">Grade Curricular Vigente &nbsp;·&nbsp; Habilitação 204 &nbsp;·&nbsp; Início: 01/01/2026</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-value">8</span><span class="stat-label">Semestres Ideais</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-value">3.300</span><span class="stat-label">Horas Totais</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-value">1.710</span><span class="stat-label">H. Aula Obrig.</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-value">480</span><span class="stat-label">H. Estágio</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-value">12</span><span class="stat-label">Semestres Máx.</span></div>
+</div>
+
+<main class="main">
+
+  <div class="view-toggle-wrap">
+    <div class="view-toggle" id="viewToggle">
+      <button class="vt-btn active" data-view="blocos">Blocos</button>
+      <button class="vt-btn" data-view="fluxo">Fluxo</button>
+    </div>
+  </div>
+
+  <div id="view-blocos" class="view-panel">
+    <div class="section-heading" style="margin-top:0">
+      <h2>Disciplinas Obrigatórias</h2>
+      <div class="line"></div>
+      <span class="section-tag">Núcleo Fixo</span>
+    </div>
+
+  <div class="semesters-stack">
+
+    <div class="sem-card" style="--sem-color:var(--sem1-color);--sem-bg:var(--sem1-bg)">
+      <div class="sem-header">
+        <span class="sem-number">1º Período Ideal</span>
+        <span class="sem-badge">390h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH0021&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH0021</a>
+            <span class="disc-name">Tratamento e Análise de Dados / Informações (TADI)</span>
+            <span class="disc-ch">30h</span>
+          </div>
+          
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH0041&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH0041</a>
+            <span class="disc-name">Resolução de Problemas I (RP1)</span>
+            <span class="disc-ch">60h <span class="disc-ext">+45h EXT</span></span>
+          </div>
+          
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2001&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2001</a>
+            <span class="disc-name">Introdução à Programação (IP)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2011&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2011</a>
+            <span class="disc-name">Cálculo I (C1)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2014&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2014</a>
+            <span class="disc-name">Fundamentos de Sistemas de Informação (FSI)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">390h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem2-color);--sem-bg:var(--sem2-bg)">
+      <div class="sem-header">
+        <span class="sem-number">2º Período Ideal</span>
+        <span class="sem-badge">420h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2002&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2002</a>
+            <span class="disc-name">Introdução à Análise de Algoritmos (IAA)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2001 - Introdução à Programação (IP)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2012&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2012</a>
+            <span class="disc-name">Cálculo II (C2)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-forte"><span class="req-code"></span><span class="req-name">ACH2011 - Cálculo I (C1)</span><span class="req-badge">Requisito</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2013&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2013</a>
+            <span class="disc-name">Matemática Discreta I (MD1)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2023&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2023</a>
+            <span class="disc-name">Algoritmos e Estruturas de Dados I (AED1)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-conjunto"><span class="req-code"></span><span class="req-name">ACH2002 - Introdução à Análise de Algoritmos (IAA)</span><span class="req-badge">Ind. Conjunto</span></span><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2001 - Introdução à Programação (IP)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2033&codcur=86200&codhab=104" target="_blank" rel="noopener">ACH2033</a>
+            <span class="disc-name">Matrizes, Vetores e Geometria Analítica (MVGA)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2011 - Cálculo I (C1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">420h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem3-color);--sem-bg:var(--sem3-bg)">
+      <div class="sem-header">
+        <span class="sem-number">3º Período Ideal</span>
+        <span class="sem-badge">360h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2003&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2003</a>
+            <span class="disc-name">Computação Orientada a Objetos (COO)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2001 - Introdução à Programação (IP)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2024&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2024</a>
+            <span class="disc-name">Algoritmos e Estruturas de Dados II (AED2)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2023 - Algoritmos e Estruturas de Dados I (AED1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2034&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2034</a>
+            <span class="disc-name">Organização e Arquitetura de Computadores I (OAC1)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2013 - Matemática Discreta I (MD1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2053&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2053</a>
+            <span class="disc-name">Introdução à Estatística (IE)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH0021 - Tratamento e Análise de Dados / Informações (TADI)</span><span class="req-badge">Req. Fraco</span></span><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2012 - Cálculo II (C2)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2063&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2063</a>
+            <span class="disc-name">Introdução à Administração e Economia para Computação (IAEC)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">360h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem4-color);--sem-bg:var(--sem4-bg)">
+      <div class="sem-header">
+        <span class="sem-number">4º Período Ideal</span>
+        <span class="sem-badge">480h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2004&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2004</a>
+            <span class="disc-name">Bancos de Dados 1 (BD1)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2003 - Computação Orientada a Objetos (COO)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2026&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2026</a>
+            <span class="disc-name">Redes de Computadores (RC)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2034 - Organização e Arquitetura de Computadores I (OAC1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2036&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2036</a>
+            <span class="disc-name">Métodos Quantitativos para Análise Multivariada (MQAM)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2053 - Introdução à Estatística (IE)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2044&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2044</a>
+            <span class="disc-name">Sistemas Operacionais (SO)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2034 - Organização e Arquitetura de Computadores I (OAC1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2055&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2055</a>
+            <span class="disc-name">Organização e Arquitetura de Computadores II (OAC2)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2034 - Organização e Arquitetura de Computadores I (OAC1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">480h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem5-color);--sem-bg:var(--sem5-bg)">
+      <div class="sem-header">
+        <span class="sem-number">5º Período Ideal</span>
+        <span class="sem-badge">480h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2005&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2005</a>
+            <span class="disc-name">Análise, Projeto e Interface Humano-Computador (APIHC)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2003 - Computação Orientada a Objetos (COO)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2016&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2016</a>
+            <span class="disc-name">Inteligência Artificial (IA)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2024 - Algoritmos e Estruturas de Dados II (AED2)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2025&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2025</a>
+            <span class="disc-name">Bancos de Dados 2 (BD2)</span>
+            <span class="disc-ch">120h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2004 - Bancos de Dados 1 (BD1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2043&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2043</a>
+            <span class="disc-name">Introdução à Teoria da Computação (ITC)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2013 - Matemática Discreta I (MD1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2147&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2147</a>
+            <span class="disc-name">Desenvolvimento de Sistemas de Informação Distribuídos (DSID)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2004 - Bancos de Dados 1 (BD1)</span><span class="req-badge">Req. Fraco</span></span><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2044 - Sistemas Operacionais (SO)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">480h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem6-color);--sem-bg:var(--sem6-bg)">
+      <div class="sem-header">
+        <span class="sem-number">6º Período Ideal</span>
+        <span class="sem-badge">240h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH0042&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH0042</a>
+            <span class="disc-name">Resolução de Problemas II (RP2)</span>
+            <span class="disc-ch">60h <span class="disc-ext">+45h EXT</span></span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2003 - Computação Orientada a Objetos (COO)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2006&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2006</a>
+            <span class="disc-name">Engenharia de Sistemas de Informação I (ESI1)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2005 - Análise, Projeto e Interface Humano-Computador (APIHC)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2008&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2008</a>
+            <span class="disc-name">Empreendedorismo em Informática (EI)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2003 - Computação Orientada a Objetos (COO)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div>
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2027&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2027</a>
+            <span class="disc-name">Gestão de Projetos de Tecnologia da Informação (GPTI)</span>
+            <span class="disc-ch">60h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2005 - Análise, Projeto e Interface Humano-Computador (APIHC)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">240h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem7-color);--sem-bg:var(--sem7-bg)">
+      <div class="sem-header">
+        <span class="sem-number">7º Período Ideal</span>
+        <span class="sem-badge">240h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2017&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2017</a>
+            <span class="disc-name">Projeto Supervisionado ou de Graduação I (PSG1)</span>
+            <span class="disc-ch">240h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2004 - Bancos de Dados 1 (BD1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">240h</span>
+      </div>
+    </div>
+
+    <div class="sem-card" style="--sem-color:var(--sem8-color);--sem-bg:var(--sem8-bg)">
+      <div class="sem-header">
+        <span class="sem-number">8º Período Ideal</span>
+        <span class="sem-badge">240h</span>
+      </div>
+      <div class="disc-list">
+        <div class="disc-item">
+          <div class="disc-top">
+            <a class="disc-code-link" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH2018&codcur=86200&codhab=204" target="_blank" rel="noopener">ACH2018</a>
+            <span class="disc-name">Projeto Supervisionado ou de Graduação II (PSG2)</span>
+            <span class="disc-ch">240h</span>
+          </div>
+          <div class="disc-reqs"><span class="req-item req-fraco"><span class="req-code"></span><span class="req-name">ACH2017 - Projeto Supervisionado ou de Graduação I (PSG1)</span><span class="req-badge">Req. Fraco</span></span></div>
+        </div></div>
+      <div class="sem-footer">
+        <span class="sem-footer-label">Carga do semestre</span>
+        <span class="sem-footer-value">240h</span>
+      </div>
+    </div>
+
+  </div><!-- /semesters-stack -->
+  </div><!-- /view-blocos -->
+
+  <div id="view-fluxo" class="view-panel" style="display:none">
+    <div class="fluxo-outer">
+      <div class="fluxo-container" id="fluxoContainer">
+        <svg class="fluxo-svg" id="fluxoSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem1-color)">
+          <div class="fluxo-col-header">1º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-IP">IP</div>
+            <div class="fluxo-node type-normal" id="fn-FSI">FSI</div>
+            <div class="fluxo-node type-normal" id="fn-TADI">TADI</div>
+            <div class="fluxo-node type-normal" id="fn-RP1">RP I</div>
+            <div class="fluxo-node type-normal" id="fn-CALC1">CALC I</div>
+            <div class="fluxo-node type-ciclo" id="fn-SMD">SMD</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem2-color)">
+          <div class="fluxo-col-header">2º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-IAA">IAA</div>
+            <div class="fluxo-node type-normal" id="fn-AED1">AED I</div>
+            <div class="fluxo-node type-normal" id="fn-MVGA">MVGA</div>
+            <div class="fluxo-node type-normal" id="fn-MD1">MD I</div>
+            <div class="fluxo-node type-normal" id="fn-CALC2">CALC II</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem3-color)">
+          <div class="fluxo-col-header">3º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-COO">COO</div>
+            <div class="fluxo-node type-normal" id="fn-AED2">AED II</div>
+            <div class="fluxo-node type-normal" id="fn-OAC1">OAC I</div>
+            <div class="fluxo-node type-normal" id="fn-IAEC">IAEC</div>
+            <div class="fluxo-node type-normal" id="fn-IE">IE</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem4-color)">
+          <div class="fluxo-col-header">4º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-BD1">BD I</div>
+            <div class="fluxo-node type-normal" id="fn-OAC2">OAC II</div>
+            <div class="fluxo-node type-normal" id="fn-SO">SO</div>
+            <div class="fluxo-node type-normal" id="fn-RC">RC</div>
+            <div class="fluxo-node type-normal" id="fn-MQAM">MQAM</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem5-color)">
+          <div class="fluxo-col-header">5º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-IHC">IHC</div>
+            <div class="fluxo-node type-normal" id="fn-IA">IA</div>
+            <div class="fluxo-node type-normal" id="fn-BD2">BD II</div>
+            <div class="fluxo-node type-normal" id="fn-DSID">DSID</div>
+            <div class="fluxo-node type-normal" id="fn-ITC">ITC</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem6-color)">
+          <div class="fluxo-col-header">6º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-RP2">RP II</div>
+            <div class="fluxo-node type-normal" id="fn-ESI1">ESI I</div>
+            <div class="fluxo-node type-normal" id="fn-EI">EI</div>
+            <div class="fluxo-node type-normal" id="fn-GPTI">GPTI</div>
+            <div class="fluxo-node type-ciclo" id="fn-PETC">PETC</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem7-color)">
+          <div class="fluxo-col-header">7º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-PSG1">PSG I</div>
+            <div class="fluxo-node type-ciclo" id="fn-CN">CN</div>
+            <div class="fluxo-node type-ciclo" id="fn-ALC">ALC</div>
+          </div>
+        </div>
+
+        <div class="fluxo-col" style="--sem-color:var(--sem8-color)">
+          <div class="fluxo-col-header">8º semestre</div>
+          <div class="fluxo-nodes">
+            <div class="fluxo-node type-normal" id="fn-PSG2">PSG II</div>
+            <div class="fluxo-node type-ciclo" id="fn-SMC">SMC</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="fluxo-legend">
+      <div class="fluxo-legend-item"><span class="fl-line fraco"></span>Requisito fraco (média ≥ 3)</div>
+      <div class="fluxo-legend-item"><span class="fl-line forte"></span>Requisito forte (média ≥ 5)</div>
+      <div class="fluxo-legend-item"><span class="fl-line conjunto"></span>Indicado em conjunto</div>
+      <div class="fluxo-legend-item"><span class="fl-ciclo-dot"></span>Ciclo básico</div>
+    </div>
+  </div>
+
+  <div class="section-heading" style="margin-top:52px;">
+    <h2>Carga Horária</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="ch-section">
+    <table class="ch-table">
+      <thead>
+        <tr><th>Categoria</th><th>Aula</th><th>Trabalho</th><th>Subtotal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Obrigatória</td><td>1.710h</td><td>1.140h</td><td>2.850h</td></tr>
+        <tr><td>Optativa Eletiva</td><td>450h</td><td>0h</td><td>450h</td></tr>
+        <tr><td>Optativa Livre</td><td>0h</td><td>0h</td><td>0h</td></tr>
+        <tr class="ch-total"><td><strong>Total</strong></td><td>2.160h</td><td>1.140h</td><td><strong>3.300h</strong></td></tr>
+        <tr><td colspan="3" style="color:var(--ink-muted);font-size:12px">Estágio (incluído no total)</td><td>480h</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <strong>Siglas:</strong> CH = Carga Horária Total &nbsp;·&nbsp; EXT = Horas Extensionistas &nbsp;·&nbsp; CE = Estágio &nbsp;·&nbsp; CP = Práticas Curriculares &nbsp;·&nbsp; ATPA = Atividades Teórico-Práticas de Aprofundamento
+    <br>
+    <strong>AAC:</strong> Obrigatórias para ingressantes 2022–2025 (30h). Ingressantes 2026+: não obrigatório.
+    <div class="req-legend">
+      <span class="req-legend-item"><span class="req-dot" style="background:var(--dot-fraco-bg);border-color:var(--dot-fraco-border)"></span>Requisito Fraco — recomendado cursar antes</span>
+      <span class="req-legend-item"><span class="req-dot" style="background:var(--dot-forte-bg);border-color:var(--dot-forte-border)"></span>Requisito — pré-requisito obrigatório</span>
+      <span class="req-legend-item"><span class="req-dot" style="background:var(--dot-conj-bg);border-color:var(--dot-conj-border)"></span>Indicação de Conjunto — cursadas preferencialmente juntas</span>
+      <span class="req-legend-item"><span class="req-dot" style="background:var(--dot-ext-bg);border-color:var(--dot-ext-border)"></span>+Xh EXT — horas extensionistas incluídas</span>
+    </div>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <div class="footer-logo">EACH · USP</div>
+  <div class="footer-text">© 1999–2026 Superintendência de Tecnologia da Informação / USP · Jupiterweb</div>
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const icon = document.getElementById('toggleIcon');
+  const label = document.getElementById('toggleLabel');
+
+  const SUN = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+  const MOON = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      html.dataset.theme = 'light';
+      icon.innerHTML = MOON;
+      label.textContent = 'Dark';
+    } else {
+      delete html.dataset.theme;
+      icon.innerHTML = SUN;
+      label.textContent = 'Light';
+    }
+  }
+
+  const saved = localStorage.getItem('theme') || 'dark';
+  applyTheme(saved);
+
+  btn.addEventListener('click', () => {
+    const next = html.dataset.theme === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    localStorage.setItem('theme', next);
+    if (document.getElementById('view-fluxo').style.display !== 'none') {
+      setTimeout(drawFluxo, 50);
+    }
+  });
+
+  // ── View toggle ──
+  document.querySelectorAll('.vt-btn').forEach(vBtn => {
+    vBtn.addEventListener('click', () => {
+      document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
+      vBtn.classList.add('active');
+      const view = vBtn.dataset.view;
+      document.getElementById('view-blocos').style.display = view === 'blocos' ? '' : 'none';
+      document.getElementById('view-fluxo').style.display  = view === 'fluxo'  ? '' : 'none';
+      if (view === 'fluxo') setTimeout(drawFluxo, 60);
+    });
+  });
+
+  // ── Fluxo diagram ──
+  const FLOW_EDGES = [
+    ['IP',    'IAA',   'fraco'],
+    ['IP',    'AED1',  'fraco'],
+    ['IP',    'COO',   'fraco'],
+    ['CALC1', 'CALC2', 'forte'],
+    ['CALC1', 'MVGA',  'fraco'],
+    ['TADI',  'IE',    'fraco'],
+    ['IAA',   'AED1',  'conjunto'],
+    ['AED1',  'AED2',  'fraco'],
+    ['MD1',   'OAC1',  'fraco'],
+    ['MD1',   'ITC',   'fraco'],
+    ['CALC2', 'IE',    'fraco'],
+    ['COO',   'BD1',   'fraco'],
+    ['COO',   'IHC',   'fraco'],
+    ['COO',   'RP2',   'fraco'],
+    ['COO',   'EI',    'fraco'],
+    ['AED2',  'IA',    'fraco'],
+    ['OAC1',  'OAC2',  'fraco'],
+    ['OAC1',  'SO',    'fraco'],
+    ['OAC1',  'RC',    'fraco'],
+    ['IE',    'MQAM',  'fraco'],
+    ['BD1',   'BD2',   'fraco'],
+    ['BD1',   'DSID',  'fraco'],
+    ['BD1',   'PSG1',  'fraco'],
+    ['SO',    'DSID',  'fraco'],
+    ['IHC',   'ESI1',  'fraco'],
+    ['IHC',   'GPTI',  'fraco'],
+    ['PSG1',  'PSG2',  'fraco'],
+  ];
+
+  const EDGE_COLORS = { fraco: '#c8953a', forte: '#f87171', conjunto: '#818cf8' };
+
+  function drawFluxo() {
+    const container = document.getElementById('fluxoContainer');
+    const svg = document.getElementById('fluxoSvg');
+    if (!svg || !container) return;
+
+    const W = container.scrollWidth;
+    const H = container.scrollHeight;
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+    let defsHtml = '<defs>';
+    Object.entries(EDGE_COLORS).forEach(([t, c]) => {
+      defsHtml += `<marker id="arr-${t}" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="${c}"/></marker>`;
+    });
+    defsHtml += '</defs>';
+    svg.innerHTML = defsHtml;
+
+    const cRect = container.getBoundingClientRect();
+    const nodeMap = {};
+    document.querySelectorAll('#fluxoContainer .fluxo-node[id]').forEach(el => {
+      const id = el.id.replace('fn-', '');
+      const nr = el.getBoundingClientRect();
+      nodeMap[id] = {
+        el,
+        cx:    nr.left - cRect.left + nr.width  / 2,
+        cy:    nr.top  - cRect.top  + nr.height / 2,
+        right: nr.right - cRect.left,
+        left:  nr.left  - cRect.left,
+      };
+    });
+
+    FLOW_EDGES.forEach(([fromId, toId, type]) => {
+      const from = nodeMap[fromId];
+      const to   = nodeMap[toId];
+      if (!from || !to) return;
+
+      const x1 = from.right - 1;
+      const y1 = from.cy;
+      const x2 = to.left + 1;
+      const y2 = to.cy;
+      const dx = Math.abs(x2 - x1) * 0.42;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M ${x1} ${y1} C ${x1+dx} ${y1} ${x2-dx} ${y2} ${x2} ${y2}`);
+      path.setAttribute('stroke', EDGE_COLORS[type]);
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('opacity', '0.65');
+      path.setAttribute('marker-end', `url(#arr-${type})`);
+      path.classList.add('fluxo-edge');
+      path.dataset.from = fromId;
+      path.dataset.to   = toId;
+      svg.appendChild(path);
+    });
+
+    // Hover highlight
+    document.querySelectorAll('#fluxoContainer .fluxo-node[id]').forEach(el => {
+      el.onmouseenter = () => {
+        const id = el.id.replace('fn-', '');
+        const connected = new Set([id]);
+        document.querySelectorAll('.fluxo-edge').forEach(edge => {
+          if (edge.dataset.from === id || edge.dataset.to === id) {
+            connected.add(edge.dataset.from);
+            connected.add(edge.dataset.to);
+            edge.setAttribute('opacity', '1');
+            edge.setAttribute('stroke-width', '2');
+          } else {
+            edge.setAttribute('opacity', '0.06');
+          }
+        });
+        document.querySelectorAll('#fluxoContainer .fluxo-node[id]').forEach(n => {
+          const nid = n.id.replace('fn-', '');
+          n.classList.toggle('node-hl',  connected.has(nid));
+          n.classList.toggle('node-dim', !connected.has(nid));
+        });
+      };
+      el.onmouseleave = () => {
+        document.querySelectorAll('.fluxo-edge').forEach(e => {
+          e.setAttribute('opacity', '0.65');
+          e.setAttribute('stroke-width', '1.5');
+        });
+        document.querySelectorAll('#fluxoContainer .fluxo-node').forEach(n => {
+          n.classList.remove('node-hl', 'node-dim');
+        });
+      };
+    });
+  }
+</script>
+</body>
+</html>
